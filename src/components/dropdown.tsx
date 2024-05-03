@@ -11,7 +11,7 @@ import {ChevronDown, Tally1, X} from "lucide-react";
 const MenuProps = {
     PaperProps: {
         style: {
-            maxHeight: 100,
+            maxHeight: 300,
             width: "inherit",
             marginTop: 4,
             borderStyle: "solid",
@@ -44,7 +44,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
             }} variant="standard">
                 <InputLabel sx={{
                     zIndex: 10,
-                    padding: "8px 12px",
+                    padding: "8px 0 0 12px",
                     fontSize: "12px",
                     [`&.${inputLabelClasses.shrink}`]: {
                         color: '#000000',
@@ -127,16 +127,22 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                             display: "flex",
                             alignItems: "center"
                         }}>
-                            <div className={"select-icon"}>
-                                <X onMouseDown={
+                            {itemsState.length > 0 && <div className={"select-icon"}>
+                                <X style={{
+                                    width: "16px"
+                                }} onMouseDown={
                                     () => setItemsState([])
                                 }/>
-                            </div>
+                            </div>}
                             <div className={"select-divider"}>
-                                <Tally1/>
+                                <Tally1 style={{
+                                    width: "28px"
+                                }}/>
                             </div>
                             <div className={"select-icon"}>
-                                <ChevronDown onMouseDown={
+                            <ChevronDown style={{
+                                    width: "20px"
+                                }} onMouseDown={
                                     () => setMenuOpen(true)
                                 }
                                 />
@@ -161,7 +167,9 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                                     },
                                     "&.Mui-selected": {
                                         background: "#ffffff"
-                                    }
+                                    },
+                                    fontSize: "14px",
+                                    display: "flex"
                                 }}
                                 key={item}
                                 value={item}
