@@ -2,15 +2,17 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import {FaX} from "react-icons/fa6";
-import {Box, Button, InputLabel, inputLabelClasses} from "@mui/material";
+import {IconButton, InputLabel, inputLabelClasses, Stack} from "@mui/material";
+import '../App.css'
+import {ChevronDown, Tally1, X} from "lucide-react";
 
 const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: 100,
-            width: 100,
+            width: "inherit",
             marginTop: 4,
             borderStyle: "solid",
             borderColor: "#ced4da",
@@ -30,24 +32,23 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
     const [itemsState, setItemsState] = React.useState<string[]>([]);
     const [menuOpen, setMenuOpen] = React.useState(false)
 
-    const handleChange = (event: SelectChangeEvent<typeof itemsState>) => {
-        const {
-            target: { value },
-        } = event;
-        setItemsState(
-            value as string[]
-        );
-        setMenuOpen(false)
-    };
-
     return (
         <div>
-            <FormControl sx={{ m: 1, minWidth:200, width: "fit-content"  }} variant="standard">
+            <FormControl sx={{
+                m: 1,
+                minWidth: 200,
+                width: "fit-content",
+                '&:hover': {
+                    color: "#ffffff"
+                }
+            }} variant="standard">
                 <InputLabel sx={{
                     zIndex: 10,
+                    padding: "8px 12px",
+                    fontSize: "12px",
                     [`&.${inputLabelClasses.shrink}`]: {
                         color: '#000000',
-                        marginTop: "-2px",
+                        marginTop: "-8px",
                         fontSize: '20px',
                         fontWeight: '500'
                     }
@@ -60,9 +61,8 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                             position: 'relative',
                             borderRadius: "4px",
                             backgroundColor: theme.palette.background.paper,
-                            border: '1px solid #ced4da',
                             fontSize: 16,
-                            padding: '10px 26px 10px 12px',
+                            padding: '8px 26px 8px 12px',
                             transition: theme.transitions.create(['border-color', 'box-shadow']),
                         },
                         'label + &': {
@@ -71,56 +71,106 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                     }}
                     multiple
                     value={itemsState}
-                    onChange={handleChange}
+                    onChange={(e) => setItemsState(e.target.value as string[])}
                     MenuProps={MenuProps}
-                    renderValue={(items)=>(
-                        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                            {items && items.map((item, idx)=>(
-                                <div key={idx} style={{display: "inline"}}>
-                                    <p style={{
-                                        borderRadius: "4px",
-                                        background: "#e6e6e6",
-                                        padding: "4px",
-                                        display: "inline"}}>
+                    renderValue={(items) => (
+                        <Stack
+                            direction={"row"}
+                            flexWrap={"wrap"}
+                            gap={1}>
+                            {items && items.map((item, idx) => (
+                                <div key={idx}
+                                     style={{
+                                         height: "22px",
+                                         display: "flex",
+                                         borderRadius: "4px",
+                                         padding: " 0 0 0 10px",
+                                         background: "#e6e6e6"
+                                     }}>
+                                    <div style={{
+                                        fontWeight: 300,
+                                        fontSize: "13.5px"
+                                    }}>
                                         {item}
-                                        <Button
-                                            sx={{zIndex: 0,
-                                                minWidth: "5px",
-                                                height: "100%",
-                                                '&:hover': {
-                                                    background: '#d4152c',
-                                                }}}
-                                            onClick={()=>{
-                                            alert("ff")
+                                    </div>
+                                    <IconButton
+                                        onMouseDown={(e) => {
+                                            setItemsState((prev) => prev.filter((value) => value != item))
+                                            e.stopPropagation()
+                                        }}
+                                        sx={{
+                                            zIndex: 10,
+                                            height: "100%",
+                                            borderRadius: "4px",
+                                            margin: "0  0 0 4px ",
+                                            '&:hover': {
+                                                background: '#ffbdad',
+                                            }
                                         }}>
-                                            <FaX
-                                                style={{fontSize: "10px", padding: "0 0 0 10px"}}/>
-                                        </Button>
-
-                                    </p>
+                                        <FaX
+                                            style={{
+                                                color: "black",
+                                                fontSize: "9px",
+                                                padding: "0 0 0 2px"
+                                            }}/>
+                                    </IconButton>
                                 </div>
                             ))}
-                        </Box>
+                        </Stack>
                     )}
-                    open = {menuOpen}
-                    onOpen={()=>setMenuOpen(true)}
-                    onClose={()=>setMenuOpen(false)}
-                >
-                    {items.map((item) => (
-                        <MenuItem
-                            sx={{
-                                "&:hover": {
-                                    background: '#deebff',
+                    open={menuOpen}
+                    onOpen={() => setMenuOpen(true)}
+                    onClose={() => setMenuOpen(false)}
+                    IconComponent={() => (
+                        <div style={{
+                            padding: "0 4px",
+                            display: "flex",
+                            alignItems: "center"
+                        }}>
+                            <div className={"select-icon"}>
+                                <X onMouseDown={
+                                    () => setItemsState([])
+                                }/>
+                            </div>
+                            <div className={"select-divider"}>
+                                <Tally1/>
+                            </div>
+                            <div className={"select-icon"}>
+                                <ChevronDown onMouseDown={
+                                    () => setMenuOpen(true)
                                 }
-                            }}
-                            key={item}
-                            value={item}
-                        >
-                            {item}
-                        </MenuItem>
+                                />
+                            </div>
+                        </div>
+
+                    )}
+                >
+                    {itemsState.length==items.length ? <MenuItem  sx={{
+                        color:"#666666",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        pointerEvents: "none"
+                    }}>
+                        No options
+                    </MenuItem> : items.filter(selected => !itemsState.includes(selected)).map((item) => (
+                            <MenuItem
+                                sx={{
+                                    "&:hover": {
+                                        background: '#deebff',
+                                    },
+                                    "&.Mui-selected": {
+                                        background: "#ffffff"
+                                    }
+                                }}
+                                key={item}
+                                value={item}
+                            >
+                                {item}
+                            </MenuItem>
+
                     ))}
                 </Select>
-
             </FormControl>
         </div>
     );

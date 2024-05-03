@@ -7,6 +7,20 @@
   height: 100vh;
 }
 
-.light {
+.select-icon {
+  height: 100%;
+  width: 20px;
+  color: #cccccc;
+  padding: 5px;
+  cursor: pointer;
+  :hover{
+    color: #0d0d0d;
+  }
+}
 
+.select-divider {
+  height: 100%;
+  font-weight: lighter;
+  width: 12px;
+  color: #cccccc;
 }
