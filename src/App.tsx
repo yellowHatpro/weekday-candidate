@@ -5,7 +5,7 @@ function App() {
   return (
     <>
         <section className={"light"}>
-            <MultiSelectDropdown items={["ashu","aswal"]} title={"Roles"}/>
+            <MultiSelectDropdown items={["ashu","aswal", "wow", "cool"]} title={"Roles"}/>
         </section>
     </>
   )

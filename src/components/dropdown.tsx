@@ -4,14 +4,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {FaX} from "react-icons/fa6";
-import {Box} from "@mui/material";
+import {Box, Button, InputLabel, inputLabelClasses} from "@mui/material";
 
 const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: 100,
             width: 100,
-            marginTop: 8,
+            marginTop: 4,
             borderStyle: "solid",
             borderColor: "#ced4da",
             borderWidth: "1px",
@@ -19,8 +19,6 @@ const MenuProps = {
         },
     },
 }
-
-
 
 type DropdownProps = {
     items: Array<string>,
@@ -30,20 +28,33 @@ type DropdownProps = {
 export default function MultiSelectDropdown({items, title}: DropdownProps) {
     const theme = useTheme();
     const [itemsState, setItemsState] = React.useState<string[]>([]);
+    const [menuOpen, setMenuOpen] = React.useState(false)
 
     const handleChange = (event: SelectChangeEvent<typeof itemsState>) => {
         const {
             target: { value },
         } = event;
         setItemsState(
-            typeof value === 'string' ? value.split(',') : value,
+            value as string[]
         );
+        setMenuOpen(false)
     };
 
     return (
         <div>
-            <FormControl sx={{ m: 1, width: 200 }} variant="standard">
+            <FormControl sx={{ m: 1, minWidth:200, width: "fit-content"  }} variant="standard">
+                <InputLabel sx={{
+                    zIndex: 10,
+                    [`&.${inputLabelClasses.shrink}`]: {
+                        color: '#000000',
+                        marginTop: "-2px",
+                        fontSize: '20px',
+                        fontWeight: '500'
+                    }
+                }}>{title}</InputLabel>
                 <Select
+                    variant={"outlined"}
+                    disableUnderline
                     sx={{
                         '& .MuiInputBase-input': {
                             position: 'relative',
@@ -54,6 +65,9 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                             padding: '10px 26px 10px 12px',
                             transition: theme.transitions.create(['border-color', 'box-shadow']),
                         },
+                        'label + &': {
+                            marginTop: theme.spacing(2),
+                        }
                     }}
                     multiple
                     value={itemsState}
@@ -61,21 +75,36 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                     MenuProps={MenuProps}
                     renderValue={(items)=>(
                         <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                            {items && items.map((item)=>(
-                                <div style={{display: "inline"}}>
-                                    <text style={{background: "#e6e6e6", padding: "4px"}}>
+                            {items && items.map((item, idx)=>(
+                                <div key={idx} style={{display: "inline"}}>
+                                    <p style={{
+                                        borderRadius: "4px",
+                                        background: "#e6e6e6",
+                                        padding: "4px",
+                                        display: "inline"}}>
                                         {item}
-                                        <FaX
+                                        <Button
+                                            sx={{zIndex: 0,
+                                                minWidth: "5px",
+                                                height: "100%",
+                                                '&:hover': {
+                                                    background: '#d4152c',
+                                                }}}
                                             onClick={()=>{
+                                            alert("ff")
+                                        }}>
+                                            <FaX
+                                                style={{fontSize: "10px", padding: "0 0 0 10px"}}/>
+                                        </Button>
 
-                                            }}
-                                            style={{fontSize: "10px", padding: "0 0 0 10px",}}/>
-
-                                    </text>
+                                    </p>
                                 </div>
                             ))}
                         </Box>
                     )}
+                    open = {menuOpen}
+                    onOpen={()=>setMenuOpen(true)}
+                    onClose={()=>setMenuOpen(false)}
                 >
                     {items.map((item) => (
                         <MenuItem
@@ -91,6 +120,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                         </MenuItem>
                     ))}
                 </Select>
+
             </FormControl>
         </div>
     );
