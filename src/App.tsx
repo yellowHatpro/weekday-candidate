@@ -1,10 +1,11 @@
 import './App.css'
+import MultiSelectDropdown from "./components/dropdown.tsx";
 
 function App() {
   return (
     <>
-        <section>
-            
+        <section className={"light"}>
+            <MultiSelectDropdown items={["ashu","aswal"]} title={"Roles"}/>
         </section>
     </>
   )
