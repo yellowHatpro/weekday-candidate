@@ -135,8 +135,7 @@ export default function JobCard({job}: JobCardProps){
             <CardActions sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center"
-
+                alignItems: "center",
             }}>
                 <Button sx={{
                     background: "#55efc4",

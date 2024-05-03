@@ -2,6 +2,7 @@ import './App.css'
 import MultiSelectDropdown from "./components/dropdown.tsx";
 import {Job} from "./types.ts";
 import JobCard from "./components/card.tsx";
+import InputField from "./components/input.tsx";
 
 function App() {
     const job : Job = {
@@ -27,6 +28,7 @@ function App() {
             <MultiSelectDropdown items={["ashu","aswal", "wow", "cool"]} title={"Remote"}/>
             <MultiSelectDropdown items={["ashu","aswal", "wow", "cool"]} title={"Tech Stack"}/>
             <MultiSelectDropdown items={["ashu","aswal", "wow", "cool"]} title={"Minimum Base Pay Salary"}/>
+            <InputField title={"Search Company Name"}/>
         </section>
         <section>
             <JobCard job={job}/>

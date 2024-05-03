@@ -46,6 +46,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                     zIndex: 10,
                     padding: "8px 0 0 12px",
                     fontSize: "12px",
+                    pointerEvents: "none",
                     [`&.${inputLabelClasses.shrink}`]: {
                         color: '#000000',
                         marginTop: "-8px",
@@ -140,7 +141,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                                 }}/>
                             </div>
                             <div className={"select-icon"}>
-                            <ChevronDown style={{
+                                <ChevronDown style={{
                                     width: "20px"
                                 }} onMouseDown={
                                     () => setMenuOpen(true)
@@ -151,8 +152,8 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
 
                     )}
                 >
-                    {itemsState.length==items.length ? <MenuItem  sx={{
-                        color:"#666666",
+                    {itemsState.length == items.length ? <MenuItem sx={{
+                        color: "#666666",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -160,23 +161,22 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                     }}>
                         No options
                     </MenuItem> : items.filter(selected => !itemsState.includes(selected)).map((item) => (
-                            <MenuItem
-                                sx={{
-                                    "&:hover": {
-                                        background: '#deebff',
-                                    },
-                                    "&.Mui-selected": {
-                                        background: "#ffffff"
-                                    },
-                                    fontSize: "14px",
-                                    display: "flex"
-                                }}
-                                key={item}
-                                value={item}
-                            >
-                                {item}
-                            </MenuItem>
-
+                        <MenuItem
+                            sx={{
+                                "&:hover": {
+                                    background: '#deebff',
+                                },
+                                "&.Mui-selected": {
+                                    background: "#ffffff"
+                                },
+                                fontSize: "14px",
+                                display: "flex"
+                            }}
+                            key={item}
+                            value={item}
+                        >
+                            {item}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
