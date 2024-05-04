@@ -52,9 +52,6 @@ export default function InputField({title}: InputFieldProps) {
                 }
             }} variant="standard">
                 <InputLabel
-                    onClick={()=>{
-                        console.log("HGi")
-                    }}
                     sx={{
                     zIndex: 10,
                     cursor: "value",
