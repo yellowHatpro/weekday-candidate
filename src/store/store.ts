@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import jobReducer from "../store/slice/jobSlice.ts"
+import filterReducer from "../store/slice/filterSlices.ts"
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 export const store = configureStore({
     reducer: {
-        jobReducer
+        jobReducer,
+        filterReducer
     }
 });
 

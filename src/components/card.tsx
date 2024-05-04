@@ -128,7 +128,7 @@ export default function JobCard({job}: JobCardProps){
                         fontSize: "14px",
                         fontWeight: "400"
                     }}>
-                        {job.minExp} year{job.minExp && job.minExp > 1 && "s"}
+                        {job.minExp ? job.minExp : "0"} year{job.minExp && job.minExp > 1 && "s"}
                     </Typography>
                 </div>
             </CardContent>

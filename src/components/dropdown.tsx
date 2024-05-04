@@ -7,6 +7,9 @@ import {FaX} from "react-icons/fa6";
 import {IconButton, InputLabel, inputLabelClasses, Stack} from "@mui/material";
 import '../App.css'
 import {ChevronDown, Tally1, X} from "lucide-react";
+import {useAppDispatch} from "../store/store.ts";
+import {addFilter, removeFilter} from "../store/slice/filterSlices.ts";
+import {Filter} from "../types.ts";
 
 const MenuProps = {
     PaperProps: {
@@ -21,16 +24,26 @@ const MenuProps = {
         },
     },
 }
-
-type DropdownProps = {
-    items: Array<string>,
+interface DropdownProps<T> {
+    items: T[]
     title: string
 }
 
-export default function MultiSelectDropdown({items, title}: DropdownProps) {
+export default function MultiSelectDropdown<T extends Filter>({items, title}: DropdownProps<T>) {
     const theme = useTheme();
+    const dispatch = useAppDispatch()
     const [itemsState, setItemsState] = React.useState<string[]>([]);
     const [menuOpen, setMenuOpen] = React.useState(false)
+
+    const handleAddItems = (item: T[]) => {
+        dispatch(addFilter(item))
+        setItemsState(item)
+    }
+
+    const handleRemoveItem = (item: T) => {
+        dispatch(removeFilter(item))
+        setItemsState((prev) => prev.filter((value) => value != item))
+    }
 
     return (
         <div>
@@ -72,7 +85,9 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                     }}
                     multiple
                     value={itemsState}
-                    onChange={(e) => setItemsState(e.target.value as string[])}
+                    onChange={(e) => {
+                        handleAddItems(e.target.value as T[])
+                    }}
                     MenuProps={MenuProps}
                     renderValue={(items) => (
                         <Stack
@@ -96,7 +111,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                                     </div>
                                     <IconButton
                                         onMouseDown={(e) => {
-                                            setItemsState((prev) => prev.filter((value) => value != item))
+                                            handleRemoveItem(item as T)
                                             e.stopPropagation()
                                         }}
                                         sx={{
@@ -132,7 +147,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                                 <X style={{
                                     width: "16px"
                                 }} onMouseDown={
-                                    () => setItemsState([])
+                                    () => handleAddItems([])
                                 }/>
                             </div>}
                             <div className={"select-divider"}>
@@ -160,7 +175,7 @@ export default function MultiSelectDropdown({items, title}: DropdownProps) {
                         pointerEvents: "none"
                     }}>
                         No options
-                    </MenuItem> : items.filter(selected => !itemsState.includes(selected)).map((item) => (
+                    </MenuItem> : (items as string[]).filter(selected => !itemsState.includes(selected as string)).map((item) => (
                         <MenuItem
                             sx={{
                                 "&:hover": {

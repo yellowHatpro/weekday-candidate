@@ -12,3 +12,10 @@ export type Job = {
 	companyName?: string | null;
 	logoUrl?: string | null;
 }
+
+export type RoleFilter = string
+export type ExpFilter = string
+export type RemoteLocationFilter = string
+export type PayFilter = string
+
+export type Filter = RoleFilter | ExpFilter | RemoteLocationFilter | PayFilter
